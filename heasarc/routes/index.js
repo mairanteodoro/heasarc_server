@@ -7,6 +7,7 @@ router.get('/', function(req, res, next) {
 });
 
 /* GET energy converter with params encoded in the address */
+/* HOW TO TEST FOR EXISTENCE OF ENCODED PARAM? */
 router.get('/conv-energy/:data1/:unit1/:unit2', function(req, res, next) {
   let userValue1 = req.params.data1;
   let userUnit1 = req.params.unit1;
