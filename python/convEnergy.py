@@ -12,27 +12,35 @@ def read_in():
 
 def main():
     lines = read_in()
-    value1, unit1, unit2 = lines
+    if (len(lines)==3):
+        value1, unit1, unit2 = lines
+    else:
+        value1, unit1 = lines
 
     # display correlation between
     # 1 - energy
-    # 2 - frequency
-    # 3 - wavelength
+    # 2 - frequency (=E/h)
+    # 3 - wavelength (=E/hc)
     # 4 - eV
-    # 5 - T
-    # 6 - m_e
-    # 7 - m_p
+    # 5 - T (=E/k)
+    # 6 - E/m_e*c2
+    # 7 - E/m_p*c2
 
     unit = u.Unit(unit1)
-    c1 = unit.to(u.Hz, equivalencies=u.spectral())
-    c2 = unit.to(u.AA, equivalencies=u.spectral())
-    c3 = unit.to(u.eV, equivalencies=u.spectral())
-    c4 = unit.to(u.K, equivalencies=u.temperature_energy()).value
-    c5 = 1.0 / const.m_e.to(unit, equivalencies=u.mass_energy()).value
-    c6 = 1.0 / const.m_p.to(unit, equivalencies=u.mass_energy()).value
+    # c0 = str(unit.to(u.erg, equivalencies=u.spectral()))+" erg"
+    # c1 = str(unit.to(u.Hz, equivalencies=u.spectral()))+" Hz"
+    # c2 = str(unit.to(u.AA, equivalencies=u.spectral()))+" AA"
+    # c3 = str(unit.to(u.eV, equivalencies=u.spectral()))+" eV"
+    # c4 = str(unit.to(u.K, equivalencies=u.temperature_energy()).value)+" K"
+    # # unitless because the returned value is E/(m_e * c^2)
+    # c5 = str(1.0 / const.m_e.to(unit, equivalencies=u.mass_energy()).value)
+    # # unitless because the returned value is E/(m_p * c^2)
+    # c6 = str(1.0 / const.m_p.to(unit, equivalencies=u.mass_energy()).value)
 
-    print((value1 * u.Unit(unit1)).to(u.Unit(unit2)))
-    print([c1,c2,c3,c4,c5,c6])
+    # each print will be concatenated to the string
+    # passed to the NodeJS server
+    print(str((value1 * u.Unit(unit1)).to(u.Unit(unit2)))+", ")
+    # print(c0+", ",c1+", ",c2+", ",c3+", ",c4+", ",c5+", ",c6)
 
 #start process
 if __name__ == '__main__':
