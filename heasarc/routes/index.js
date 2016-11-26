@@ -66,4 +66,28 @@ router.get('/multiplex-energy/:data1/:unit1', function(req, res, next) {
   py.stdin.end();
 });
 
+// GET date and time conversions
+router.get('/time-and-date/:date', function(req, res, next) {
+  let date = req.params.date;
+
+  let spawn = require('child_process').spawn;
+  let py = spawn('python', ['../python/timeAndDate.py']);
+  let dataString = '';
+
+  // do this while the process is outputting
+  py.stdout.on('data', function(data) {
+    dataString += data.toString();
+  });
+  // do this when process ends
+  py.stdout.on('end', function() {
+    // deliver data to user
+    res.send({'result': dataString});
+  });
+
+  // pass the data to the process
+  py.stdin.write(JSON.stringify(date));
+  // finish the process
+  py.stdin.end();
+});
+
 module.exports = router;
